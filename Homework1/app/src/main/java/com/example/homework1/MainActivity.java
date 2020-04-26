@@ -40,18 +40,20 @@ import android.widget.Toast;
         Button sd3;
         EditText texto;
 
-        public static String sd1_nome = "";
+        public static String sd1_nome = "NOT DEFINED";
         public static String sd1_num = "";
-        public static String sd2_nome = "";
+        public static String sd2_nome = "NOT DEFINED";
         public static String sd2_num = "";
-        public static String sd3_nome = "";
+        public static String sd3_nome = "NOT DEFINED";
         public static String sd3_num = "";
 
         public static void setSd1_nome(String sd1_nome) {
+
             MainActivity.sd1_nome = sd1_nome;
         }
 
         public static void setSd1_num(String sd1_num) {
+
             MainActivity.sd1_num = sd1_num;
         }
 
@@ -91,9 +93,13 @@ import android.widget.Toast;
             ligar = findViewById(R.id.button13);
             apagar = findViewById(R.id.button14);
             texto = findViewById(R.id.editText);
-            sd1 = findViewById(R.id.button18);
-            sd2 = findViewById(R.id.button19);
-            sd1 = findViewById(R.id.button20);
+            sd1 = (Button)findViewById(R.id.button18);
+            sd2 = (Button)findViewById(R.id.button19);
+            sd3 = (Button)findViewById(R.id.button20);
+
+            sd1.setText(sd1_nome);
+            sd2.setText(sd2_nome);
+            sd3.setText(sd3_nome);
 
             ligar.setOnClickListener(new View.OnClickListener(){
 
@@ -115,12 +121,13 @@ import android.widget.Toast;
             sd1.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Intent i = new Intent(v.getContext(), sdinfo.class);
+                    Intent i = new Intent(getApplicationContext(), sdinfo.class);
+                    startActivity(i);
                     i.putExtra("numero", sd1_num);
-                    i.putExtra("name", sd1_nome);
+                    i.putExtra("nome", sd1_nome);
                     i.putExtra("id", "1");
                     startActivity(i);
-                    return false;
+                    return true;
                 }
             });
 
@@ -136,12 +143,12 @@ import android.widget.Toast;
             sd2.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Intent i = new Intent(v.getContext(), sdinfo.class);
+                    Intent i = new Intent(getApplicationContext(), sdinfo.class);
                     i.putExtra("numero", sd2_num);
-                    i.putExtra("name", sd2_nome);
+                    i.putExtra("nome", sd2_nome);
                     i.putExtra("id", "2");
                     startActivity(i);
-                    return false;
+                    return true;
                 }
             });
 
@@ -157,12 +164,12 @@ import android.widget.Toast;
             sd3.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Intent i = new Intent(v.getContext(), sdinfo.class);
+                    Intent i = new Intent(getApplicationContext(), sdinfo.class);
                     i.putExtra("numero", sd3_num);
-                    i.putExtra("name", sd3_nome);
+                    i.putExtra("nome", sd3_nome);
                     i.putExtra("id", "3");
                     startActivity(i);
-                    return false;
+                    return true;
                 }
             });
         }
