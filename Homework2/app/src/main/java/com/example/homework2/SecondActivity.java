@@ -1,14 +1,12 @@
 package com.example.homework2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.homework2.datamodel.City;
 import com.example.homework2.datamodel.Weather;
@@ -19,53 +17,32 @@ import com.example.homework2.network.IpmaWeatherClient;
 import com.example.homework2.network.WeatherTypesResultsObserver;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class SecondActivity extends AppCompatActivity {
 
+    TextView mTitleTv, mDescriptionTv;
     private TextView feedback;
-
     IpmaWeatherClient client = new IpmaWeatherClient();
     private HashMap<String, City> cities;
     private HashMap<Integer, WeatherType> weatherDescriptions;
 
-
-    private final LinkedList<String> mWordList = new LinkedList<>();
-    private RecyclerView mRecyclerView;
-    private WordListAdapter mAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_second);
 
-        /*FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                @Override
-                public void onClick(View view) {
-                    callWeatherForecastForACityStep1("Aveiro");
-                }
-            }
-        });*/
+        mTitleTv = findViewById(R.id.textView3);
+        feedback = findViewById(R.id.feedback);
 
-        mWordList.addLast("Aveiro");
-        mWordList.addLast("Lisboa");
-        mWordList.addLast("Porto");
+        Intent intent = getIntent();
 
+        String mTitle = intent.getStringExtra("iTitle");
 
-        // Get a handle to the RecyclerView.
-        mRecyclerView = findViewById(R.id.recyclerview);
-        // Create an adapter and supply the data to be displayed.
-        mAdapter = new WordListAdapter(this, mWordList);
-        // Connect the adapter with the RecyclerView.
-        mRecyclerView.setAdapter(mAdapter);
-        // Give the RecyclerView a default layout manager.
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        callWeatherForecastForACityStep1(mTitle);
+
+        mTitleTv.setText(mTitle);
+
     }
 
     @Override
@@ -99,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         client.retrieveWeatherConditionsDescriptions(new WeatherTypesResultsObserver() {
             @Override
             public void receiveWeatherTypesList(HashMap<Integer, WeatherType> descriptorsCollection) {
-                MainActivity.this.weatherDescriptions = descriptorsCollection;
+                SecondActivity.this.weatherDescriptions = descriptorsCollection;
                 callWeatherForecastForACityStep2( city);
             }
             @Override
@@ -115,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void receiveCitiesList(HashMap<String, City> citiesCollection) {
-                MainActivity.this.cities = citiesCollection;
+                SecondActivity.this.cities = citiesCollection;
                 City cityFound = cities.get(city);
                 if( null != cityFound) {
                     int locationId = cityFound.getGlobalIdLocal();
