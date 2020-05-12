@@ -1,12 +1,13 @@
 package com.example.homework2;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.LinkedList;
@@ -16,6 +17,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     private final LinkedList<String> mWordList;
     private LayoutInflater mInflater;
     private Context c;
+    public SecondFragment secondfrag = SecondFragment.newInstance();
+    public Bundle dataBundle = new Bundle();
 
     public WordListAdapter(Context context,
                            LinkedList<String> wordList) {
@@ -42,12 +45,11 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             public void onItemClickListener(View v, int pos) {
 
                 String gTitle = mWordList.get(pos);
-                String gDescription = mWordList.get(pos) + "Desc";
+                dataBundle.putString("title", gTitle);
+                secondfrag.setArguments(dataBundle);
 
-                Intent intent = new Intent(c, SecondActivity.class);
-                intent.putExtra("iTitle", gTitle);
-                intent.putExtra("iDescription", gDescription);
-                c.startActivity(intent);
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment, secondfrag).addToBackStack(null).commit();
             }
         });
 
@@ -57,7 +59,6 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     public int getItemCount() {
         return mWordList.size();
     }
-
 
 
     class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -78,6 +79,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         @Override
         public void onClick(View v) {
             this.itemClickListener.onItemClickListener(v, getLayoutPosition());
+
         }
 
         public void setItemClickListener(ItemClickListener ic){
